@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<layout >-->
+<!--    <data>-->
+<!--        <variable-->
+<!--            name="handler"-->
+<!--            type="com.example.todo.MainActivity.ActivityHandler" />-->
+<!--    </data>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:visibility="visible"
+        tools:context=".MainActivity">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_container"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liftOnScroll="true">
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/app_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:fontFamily="@font/oswald_semibold"
+                            android:text="@string/to_do_list"
+                            android:textSize="30sp"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            />
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/baseline_access_alarm_24"
+                            app:layout_constraintStart_toEndOf="@id/app_title"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="@dimen/_25sdp"
+                            android:layout_marginStart="@dimen/_110sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/app_title"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_18sdp"
+                            android:background="@drawable/background_search"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            >
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/baseline_search_24"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                app:tint="@color/colorSearchIcon"
+                                android:contentDescription="@string/search_icon"
+                                />
+                            <EditText
+                                android:id="@+id/search_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_35sdp"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:fontFamily="@font/ubuntu_mediumitalic"
+                                android:background="@null"
+                                android:hint="@string/search_notes"
+                                android:padding="@dimen/_8sdp"
+                                android:textSize="@dimen/_13ssp"
+                                android:imeOptions="actionSearch"
+                                android:importantForAutofill="no"
+                                android:inputType="text"
+                                />
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:padding="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:transitionGroup="true">
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <ImageView
+                    android:id="@+id/empty_list_img"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/juicy_note_pinned_with_a_button_img"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="fitXY"
+                    android:visibility="visible">
+
+                </ImageView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/baseline_add_24"
+                android:tint="@color/colorPrimary"
+                android:background="@drawable/background_add_button"
+
+
+
+
+
+
+            
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+<!--</layout>-->
+
