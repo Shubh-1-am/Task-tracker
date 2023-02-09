@@ -3,4 +3,13 @@
     <string name="to_do_list">To Do List</string>
     <string name="search_icon">search_icon</string>
     <string name="search_notes">Search notes</string>
+    <string name="back">back</string>
+    <string name="last_edited_on">Last edited on</string>
+    <string name="example_last_updated_on">Sat 24-Sep-2020 12:40:15</string>
+    <string name="pin">pin</string>
+    <string name="save">save</string>
+    <string name="add_image">Add image</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
+    <string name="add_url">Add URL</string>
 </resources>

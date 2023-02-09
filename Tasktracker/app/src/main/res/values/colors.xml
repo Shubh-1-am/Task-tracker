@@ -2,6 +2,9 @@
 <resources>
     <color name="colorPrimary">#292929</color>
     <color name="colorPrimaryVariant">#292929</color>
+    <color name="colorSecondary">#FDBE38</color>
+    <color name="colorSecondaryVariant">#FDD174</color>
+    <color name="colorIcon">#A4A4A4</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -13,4 +16,7 @@
 
     <color name="background_search">#333333</color>
     <color name="colorSearchIcon">#DBDBDB</color>
+    <color name="colorHint">#7B7B7B</color>
+    <color name="colorNoteDefaultColor">#333333</color>
+    <color name="colorBottomSheet">#1F1F1F</color>
 </resources>
