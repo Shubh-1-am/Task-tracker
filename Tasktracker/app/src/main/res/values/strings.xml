@@ -12,4 +12,5 @@
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="add_url">Add URL</string>
+    <string name="choose_background">Choose background</string>
 </resources>
