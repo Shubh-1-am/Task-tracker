@@ -8,6 +8,11 @@
             name="viewModel"
             type="com.example.tasktracker.viewModel.AddEditActivityViewModel" />
 
+        <variable
+            name="handler"
+            type="com.example.tasktracker.AddEditActivity.AddEditActivityHandler" />
+
+
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -59,8 +64,7 @@
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_centerVertical="true"
                             android:layout_toEndOf="@+id/back_imageView"
-                            android:visibility="visible"
-
+                            android:visibility="gone"
                             android:orientation="vertical">
                             <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="wrap_content"
@@ -92,12 +96,13 @@
                             android:id="@+id/pin_unpin_imageView"
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
-                            android:layout_toEndOf="@+id/last_edited_on_linear_layout"
+                            android:layout_toStartOf="@id/save_imageView"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:src="@drawable/pin_filled"
+                            android:src="@drawable/control_pins"
+                            app:isPinned="@{viewModel.getNote().isPinned()}"
                             android:clickable="true"
                             android:focusable="true"
                             android:contentDescription="@string/pin"/>
@@ -106,7 +111,7 @@
                             android:id="@+id/save_imageView"
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="@dimen/_70sdp"
-                            android:layout_toEndOf="@+id/pin_unpin_imageView"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/baseline_save_24"
                             app:tint="@color/colorIcon"
@@ -140,14 +145,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:ignore="UseCompoundDrawables">
-
                         <ImageView
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
                             android:src="@drawable/add_image"
                             android:layout_margin="@dimen/_12sdp"
                             android:contentDescription="@string/add_image"/>
-
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -189,7 +192,7 @@
                             android:layout_height="@dimen/_30sdp"
                             android:layout_marginStart="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/background_note"/>
+                            android:background="@{viewModel.getNote().noteBackground}"/>
                         <com.yahiaangelo.markdownedittext.MarkdownEditText
                             android:id="@+id/note_description_markdownEditText"
                             android:layout_width="match_parent"
@@ -206,8 +209,6 @@
                             android:textSize="@dimen/_25ssp"
                             android:hint="@string/note"
                             android:textColorHint="@color/colorHint"/>
-
-
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/add_url_linear_layout"
@@ -235,47 +236,33 @@
                             android:includeFontPadding="false"
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="@color/colorHint"/>
-
-
                     </LinearLayout>
-
-
                 </RelativeLayout>
-
-
-
             </ScrollView>
 
-
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottom_sheet"
-            android:visibility="visible">
-            <com.yahiaangelo.markdownedittext.MarkdownStylesBar
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:elevation="@dimen/_5sdp"/>
-        </LinearLayout>
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/bottom_sheet"
+                android:visibility="visible">
+                <com.yahiaangelo.markdownedittext.MarkdownStylesBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:elevation="@dimen/_5sdp"/>
+            </LinearLayout>
 
-        <include
-            android:id="@+id/bottom_sheet"
-            layout="@layout/bottom_sheet_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            />
+            <include
+                android:id="@+id/bottom_sheet"
+                layout="@layout/bottom_sheet_layout"
+                app:secondaryHandler="@{handler}"
+                />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
