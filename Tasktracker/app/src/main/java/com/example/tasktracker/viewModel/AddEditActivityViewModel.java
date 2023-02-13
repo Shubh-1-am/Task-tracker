@@ -1,8 +1,10 @@
 package com.example.tasktracker.viewModel;
 
 import android.app.Application;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
@@ -37,6 +39,11 @@ public class AddEditActivityViewModel extends AndroidViewModel {
 
     public MutableLiveData<Note> getNote(){
         return noteLiveData;
+    }
+
+    @BindingAdapter("isPinned")
+    public static void setPinned(ImageView view, boolean isPinned) {
+        view.setSelected(isPinned);
     }
 
 
