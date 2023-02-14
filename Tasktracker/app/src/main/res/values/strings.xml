@@ -13,4 +13,10 @@
     <string name="note">Note</string>
     <string name="add_url">Add URL</string>
     <string name="choose_background">Choose background</string>
+    <string name="cancel">CANCEL</string>
+    <string name="take_photo">TAKE PHOTO</string>
+    <string name="choose_from_gallery">CHOOSE FROM LIBRARY</string>
+    <string name="add_title">Add title</string>
+    <string name="add">ADD</string>
+    <string name="add_Link">Link</string>
 </resources>

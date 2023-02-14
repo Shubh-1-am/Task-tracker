@@ -7,6 +7,7 @@
             type="com.example.tasktracker.AddEditActivity.AddEditActivityHandler" />
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/bottom_sheet_layout_container"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -14,7 +15,9 @@
         android:background="@drawable/background_bottom_sheet"
         android:orientation="vertical"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        >
+        app:behavior_peekHeight="@dimen/_45sdp"
+        app:behavior_hideable="false">
+
 
         <LinearLayout
             android:id="@+id/bottom_sheet_text"
@@ -29,7 +32,9 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/color_palette" />
 
             <TextView

@@ -8,6 +8,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.tasktracker.BR;
+
 import java.io.Serializable;
 
 @Entity(tableName = "notes_table")
@@ -37,7 +39,11 @@ public class Note extends BaseObservable implements Serializable {
     @ColumnInfo(name = "url")
     private String url;
 
-    public Note(int id, String title, String description, boolean isPinned, String lastUpdateDateTime, int noteBackground, String noteImage, String url) {
+    @ColumnInfo(name = "markdown_link_text")
+    private String markdownLinkText;
+
+
+    public Note(int id, String title, String description, boolean isPinned, String lastUpdateDateTime, int noteBackground, String noteImage, String url, String markdownLinkText) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -46,6 +52,7 @@ public class Note extends BaseObservable implements Serializable {
         this.noteBackground = noteBackground;
         this.noteImage = noteImage;
         this.url = url;
+        this.markdownLinkText = markdownLinkText;
     }
 
     @Ignore
@@ -59,7 +66,7 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-//        notifyPropertyChanged(com.example.tasktracker.BR.id);
+        notifyPropertyChanged(BR.id);
     }
 
     @Bindable
@@ -69,6 +76,7 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+        notifyPropertyChanged(BR.title);
     }
 
     @Bindable
@@ -78,6 +86,7 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+        notifyPropertyChanged(BR.description);
     }
 
     @Bindable
@@ -87,24 +96,29 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setPinned(boolean pinned) {
         isPinned = pinned;
+        notifyPropertyChanged(BR.pinned);
     }
 
     @Bindable
     public String getLastUpdateDateTime() {
         return lastUpdateDateTime;
+
     }
 
     public void setLastUpdateDateTime(String lastUpdateDateTime) {
         this.lastUpdateDateTime = lastUpdateDateTime;
+        notifyPropertyChanged(BR.lastUpdateDateTime);
     }
 
     @Bindable
     public int getNoteBackground() {
         return noteBackground;
+
     }
 
     public void setNoteBackground(int noteBackground) {
-        noteBackground = noteBackground;
+        this.noteBackground = noteBackground;
+        notifyPropertyChanged(BR.noteBackground);
     }
 
     @Bindable
@@ -114,6 +128,7 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setNoteImage(String noteImage) {
         this.noteImage = noteImage;
+        notifyPropertyChanged(BR.noteImage);
     }
 
     @Bindable
@@ -123,5 +138,16 @@ public class Note extends BaseObservable implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+        notifyPropertyChanged(BR.url);
+    }
+
+    @Bindable
+    public String getMarkdownLinkText() {
+        return markdownLinkText;
+    }
+
+    public void setMarkdownLinkText(String markdownLinkText) {
+        this.markdownLinkText = markdownLinkText;
+        notifyPropertyChanged(BR.markdownLinkText);
     }
 }
