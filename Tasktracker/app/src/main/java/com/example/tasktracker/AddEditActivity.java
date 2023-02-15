@@ -99,6 +99,11 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.addImageLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
+
             showAddImageDialog();
             }
         });
@@ -106,6 +111,10 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.noteImageImageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 showAddImageDialog();
             }
         });
@@ -113,6 +122,10 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.deleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 activityAddEditBinding.noteImageConstraintLayout.setVisibility(View.GONE);
                 activityAddEditBinding.addImageLinearLayout.setVisibility(View.VISIBLE);
                 currentNote.setNoteImage("");
@@ -122,6 +135,10 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.addUrlLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 showAddURLDialog();
             }
         });
@@ -129,6 +146,10 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.addUrlImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 showAddURLDialog();
             }
         });
@@ -138,6 +159,10 @@ public class AddEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                // At every click on this button, delete the last markdown string [title](url) from currentNote.getMarkdownLinkText()
                 // and update the markdownLinkText in currentNote
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 String markdownLinkText = currentNote.getMarkdownLinkText();
 
                 int lastIndex = markdownLinkText.lastIndexOf(") [");
@@ -163,20 +188,56 @@ public class AddEditActivity extends AppCompatActivity {
         activityAddEditBinding.noteBackgroundImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (activityAddEditBinding.markdownStylesBarLinearLayout.getVisibility() == View.VISIBLE) {
+                    activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.GONE);
+                    activityAddEditBinding.noteDescriptionMarkdownEditText.setCursorVisible(false);
+                }
                 showBottomSheetDialog();
 
             }
         });
 
+
         if (!isEditMode) {
             currentNote = new Note();
-            addEditActivityViewModel.setNote(currentNote);
             activityAddEditBinding.noteBackgroundImageView.setImageResource(R.color.colorNoteDefaultColor);
             currentNote.setPinned(false);
             currentNote.setNoteImage("");
             currentNote.setNoteBackground(R.color.colorNoteDefaultColor);
-        }
+        } else {
+            currentNote = (Note) (getIntent().getSerializableExtra(MainActivity.NOTE_EXTRA));
+            activityAddEditBinding.lastEditedOnLinearLayout.setVisibility(View.VISIBLE);
 
+            activityAddEditBinding.noteBackgroundImageView.setImageResource(currentNote.getNoteBackground());
+            if (currentNote.getNoteImage() != null && !currentNote.getNoteImage().isEmpty()) {
+                activityAddEditBinding.addImageLinearLayout.setVisibility(View.GONE);
+                activityAddEditBinding.noteImageImageview.setImageURI(Uri.parse(currentNote.getNoteImage()));
+                activityAddEditBinding.noteImageConstraintLayout.setVisibility(View.VISIBLE);
+            }
+            if (currentNote.getDescription() != null){
+                activityAddEditBinding.noteDescriptionMarkdownEditText.renderMD(currentNote.getDescription());
+            } else {
+                activityAddEditBinding.noteDescriptionMarkdownEditText.setText("");
+            }
+
+            if (currentNote.getMarkdownLinkText() != null){
+                activityAddEditBinding.addUrlLinearLayout.setVisibility(View.GONE);
+                displayUrl();
+                activityAddEditBinding.addUrlRelativeLayout.setVisibility(View.VISIBLE);
+            }
+
+            setPinImage();
+        }
+        addEditActivityViewModel.setNote(currentNote);
+
+    }
+
+    private void setPinImage() {
+        if (currentNote.isPinned()) {
+            activityAddEditBinding.pinUnpinImageView.setImageResource(R.drawable.pin_filled);
+        } else {
+            activityAddEditBinding.pinUnpinImageView.setImageResource(R.drawable.pin_unfilled);
+        }
     }
 
     private void showBottomSheetDialog() {
@@ -210,6 +271,14 @@ public class AddEditActivity extends AppCompatActivity {
         });
         markdownStylesBar.setMarkdownEditText(markdownEditText);
 
+        markdownEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                markdownEditText.setCursorVisible(true);
+                activityAddEditBinding.markdownStylesBarLinearLayout.setVisibility(View.VISIBLE);
+
+            }
+        });
         markdownEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -233,7 +302,6 @@ public class AddEditActivity extends AppCompatActivity {
                 dialogAddImage.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
-            Toast.makeText(this, "checkkkkk", Toast.LENGTH_SHORT).show();
             view.findViewById(R.id.dialog_choose_from_gallery_textView).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -424,6 +492,7 @@ public class AddEditActivity extends AppCompatActivity {
 
     public  class AddEditActivityHandler {
         public void onColorSelected(View view) {
+            BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(activityAddEditBinding.bottomSheet.getRoot());
             ImageView imageView = activityAddEditBinding.noteBackgroundImageView;
 
             switch (view.getId()){
@@ -431,65 +500,77 @@ public class AddEditActivity extends AppCompatActivity {
                     checkUncheckColors("color1");
                     currentNote.setNoteBackground(R.color.colorNoteDefaultColor);
                     imageView.setImageResource(R.color.colorNoteDefaultColor);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_2:
                     checkUncheckColors("color2");
                     currentNote.setNoteBackground(R.color.color_2_White);
                     imageView.setImageResource(R.color.color_2_White);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_3:
                     checkUncheckColors("color3");
                     currentNote.setNoteBackground(R.color.color_3_light_gray);
                     imageView.setImageResource(R.color.color_3_light_gray);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_4:
                     checkUncheckColors("color4");
                     currentNote.setNoteBackground(R.color.color_4_dark_gray);
                     imageView.setImageResource(R.color.color_4_dark_gray);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_5:
                     checkUncheckColors("color5");
                     currentNote.setNoteBackground(R.color.color_5_dark_orange);
                     imageView.setImageResource(R.color.color_5_dark_orange);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
                 case R.id.color_6:
                     checkUncheckColors("color6");
                     currentNote.setNoteBackground(R.color.color_6_dark_red);
                     imageView.setImageResource(R.color.color_6_dark_red);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
                 case R.id.color_7:
                     checkUncheckColors("color7");
                     currentNote.setNoteBackground(R.color.color_7_dark_purple);
                     imageView.setImageResource(R.color.color_7_dark_purple);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
                 case R.id.color_8:
                     checkUncheckColors("color8");
                     currentNote.setNoteBackground(R.color.color_8_dark_blue);
                     imageView.setImageResource(R.color.color_8_dark_blue);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_9:
                     checkUncheckColors("color9");
                     currentNote.setNoteBackground(R.color.color_9_sky_blue);
                     imageView.setImageResource(R.color.color_9_sky_blue);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
                 case R.id.color_10:
                     checkUncheckColors("color10");
                     currentNote.setNoteBackground(R.color.color_10_forest_green);
                     imageView.setImageResource(R.color.color_10_forest_green);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_11:
                     checkUncheckColors("color11");
                     currentNote.setNoteBackground(R.color.color_11_yellow);
                     imageView.setImageResource(R.color.color_11_yellow);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.color_12:
                     checkUncheckColors("color12");
                     currentNote.setNoteBackground(R.color.color_12_orange);
                     imageView.setImageResource(R.color.color_12_orange);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
             }
@@ -498,57 +579,68 @@ public class AddEditActivity extends AppCompatActivity {
         }
 
         public void onBackgroundImageSelected(View view){
+            BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(activityAddEditBinding.bottomSheet.getRoot());
             ImageView imageView = activityAddEditBinding.noteBackgroundImageView;
             switch (view.getId()){
                 case R.id.bg_image_1:
                     currentNote.setNoteBackground(R.drawable.bg2);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg2);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_2:
                     currentNote.setNoteBackground(R.drawable.bg3);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg3);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_3:
                     currentNote.setNoteBackground(R.drawable.bg4);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg4);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_4:
                     currentNote.setNoteBackground(R.drawable.bg5);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg5);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_5:
                     currentNote.setNoteBackground(R.drawable.bg6);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg6);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_6:
                     currentNote.setNoteBackground(R.drawable.bg7);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg7);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_7:
                     currentNote.setNoteBackground(R.drawable.bg8);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg8);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_8:
                     currentNote.setNoteBackground(R.drawable.bg9);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg9);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_9:
                     currentNote.setNoteBackground(R.drawable.bg10);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg10);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
                 case R.id.bg_image_10:
                     currentNote.setNoteBackground(R.drawable.bg11);
                     checkUncheckColors("");
                     imageView.setImageResource(R.drawable.bg11);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     break;
 
             }

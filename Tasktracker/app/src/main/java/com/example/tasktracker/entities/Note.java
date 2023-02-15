@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
 import com.example.tasktracker.BR;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(tableName = "notes_table")
 public class Note extends BaseObservable implements Serializable {
@@ -149,5 +150,19 @@ public class Note extends BaseObservable implements Serializable {
     public void setMarkdownLinkText(String markdownLinkText) {
         this.markdownLinkText = markdownLinkText;
         notifyPropertyChanged(BR.markdownLinkText);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        // check null
+        return Objects.equals(id, note.id) && Objects.equals(title, note.title) && Objects.equals(description, note.description) && Objects.equals(isPinned, note.isPinned) && Objects.equals(lastUpdateDateTime, note.lastUpdateDateTime) && Objects.equals(noteBackground, note.noteBackground) && Objects.equals(noteImage, note.noteImage) && Objects.equals(url, note.url) && Objects.equals(markdownLinkText, note.markdownLinkText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, isPinned, lastUpdateDateTime, noteBackground, noteImage, url, markdownLinkText);
     }
 }

@@ -5,10 +5,13 @@ import android.net.Uri;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.tasktracker.ItemClickListener;
 import com.example.tasktracker.databinding.NoteItemBinding;
 import com.example.tasktracker.entities.Note;
 import com.google.android.material.textview.MaterialTextView;
@@ -22,12 +25,36 @@ import io.noties.markwon.ext.tasklist.TaskListPlugin;
 
 public class NoteViewHolder extends RecyclerView.ViewHolder {
 
-    private NoteItemBinding noteItemBinding;
+    private final NoteItemBinding noteItemBinding;
     private Note currentNote;
+
+    private Context context;
+    private ItemClickListener itemClickListener;
 
     public NoteViewHolder(@NonNull NoteItemBinding noteItemBinding) {
         super(noteItemBinding.getRoot());
         this.noteItemBinding = noteItemBinding;
+        noteItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onClick(currentNote);
+            }
+        });
+
+        noteItemBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                itemClickListener.onLongClick(currentNote);
+                return true;
+            }
+        });
+
+        noteItemBinding.noteItemNoteImagePinImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onPinClick(currentNote);
+            }
+        });
     }
 
     public void setNoteBackground(){
@@ -38,11 +65,11 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         noteItemBinding.noteItemNoteImagePinImageview.setVisibility(currentNote.isPinned() ? View.VISIBLE : View.GONE);
     }
 
-    public void setNoteImage() {
-        // Display image from absoute path current.noteImage
+    public void setNoteImage(){
         noteItemBinding.noteItemNoteImageImageview.setVisibility(currentNote.getNoteImage() != null ? View.VISIBLE : View.GONE);
-        noteItemBinding.noteItemNoteImageImageview.setImageURI(Uri.parse(currentNote.getNoteImage()));
-
+        Glide.with(context)
+                .load(currentNote.getNoteImage())
+                .into(noteItemBinding.noteItemNoteImageImageview);
     }
 
     public void setNote(Note note) {
@@ -50,7 +77,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         currentNote = note;
     }
 
-    public void setNoteUrl(Context context) {
+    public void setNoteUrl() {
         if (currentNote.getMarkdownLinkText() != null) {
             MaterialTextView urlTextView = noteItemBinding.noteItemNoteUrlTextview;
             Markwon markwon = Markwon.builder(context)
@@ -70,7 +97,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setNoteDescription(Context context) {
+    public void setNoteDescription() {
         if (currentNote.getDescription() != null){
             MaterialTextView descriptionTextView = noteItemBinding.noteItemNoteDescriptionTextview;
 
@@ -87,7 +114,11 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
             markwon.setMarkdown(descriptionTextView, currentNote.getDescription());
             noteItemBinding.noteItemNoteDescriptionTextview.setVisibility(View.VISIBLE);
         }
+    }
 
 
+    public void setContext(Context context) {
+        this.context = context;
+        itemClickListener = (ItemClickListener) context;
     }
 }

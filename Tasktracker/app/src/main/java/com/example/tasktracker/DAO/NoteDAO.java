@@ -32,6 +32,6 @@ public interface NoteDAO {
     @Query("SELECT * FROM notes_table WHERE is_pinned = 1 ORDER BY last_update_date_time DESC")
     LiveData<List<Note>> getAllPinnedNotes();
 
-    @Query("SELECT * FROM notes_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery OR last_update_date_time LIKE :searchQuery ORDER BY last_update_date_time DESC")
+    @Query("SELECT * FROM notes_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery OR last_update_date_time LIKE :searchQuery ORDER BY is_pinned DESC, last_update_date_time DESC")
     LiveData<List<Note>> getAllNotesAccordingToSearchQuery(String searchQuery);
 }

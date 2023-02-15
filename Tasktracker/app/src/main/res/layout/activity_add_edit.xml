@@ -82,7 +82,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorIcon"
-                                android:text="@string/example_last_updated_on"
+                                android:text="@{viewModel.getNote().lastUpdateDateTime}"
                                 android:background="@drawable/background_search"
                                 android:layout_gravity="center_horizontal"
                                 android:textSize="@dimen/_12ssp"
