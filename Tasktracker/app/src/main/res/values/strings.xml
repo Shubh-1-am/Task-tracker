@@ -25,4 +25,10 @@
     <string name="no">NO</string>
     <string name="unpin_note">Unpin Note</string>
     <string name="are_you_sure_you_want_to_unpin_this_note">Are you sure you want to unpin this note?</string>
+    <string name="remainders">Remainders</string>
+    <string name="add_remainder">Add Remainder</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="SAVE">SAVE</string>
+    <string name="remainder">Remainder!</string>
 </resources>
