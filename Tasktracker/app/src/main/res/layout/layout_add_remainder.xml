@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@drawable/background_dialog">
+    <ImageView
+        android:id="@+id/dialoog_remainder_main_icon_imageview"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:src="@drawable/add_remainder_yellow_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dialog_remainder_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:fontFamily="@font/oswald_semibold"
+        android:text="@string/add_remainder"
+        android:includeFontPadding="false"
+        android:textSize="@dimen/_18ssp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/dialoog_remainder_main_icon_imageview"
+        app:layout_constraintTop_toTopOf="@id/dialoog_remainder_main_icon_imageview"
+        app:layout_constraintBottom_toBottomOf="@id/dialoog_remainder_main_icon_imageview"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/dialog_remainder_title_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/custom_input_edit_text"
+        android:padding="@dimen/_5sdp"
+        android:drawableStart="@drawable/write"
+        android:drawablePadding="@dimen/_15sdp"
+        android:drawableTint="@color/colorIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_remainder_textView"
+        android:hint="@string/add_title"
+        android:textColorHint="@color/colorHint"
+        android:textSize="@dimen/_15ssp"
+        android:fontFamily="@font/roboto_medium"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:ems="10"
+        android:inputType="text"/>
+
+    <LinearLayout
+        android:id="@+id/dialog_remainder_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/custom_input_edit_text"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_remainder_title_editText">
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/select_date"
+            app:tint="@color/colorIcon"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:includeFontPadding="false"
+            android:layout_gravity="center_vertical"
+            android:text="@string/select_date"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/colorHint"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dialog_remainder_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/custom_input_edit_text"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_remainder_date_layout">
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/clock"
+            app:tint="@color/colorIcon"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:includeFontPadding="false"
+            android:layout_gravity="center_vertical"
+            android:text="@string/select_time"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/colorHint"/>
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dialog_remainder_save_option_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:fontFamily="@font/roboto_medium"
+        android:includeFontPadding="false"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/SAVE"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/_15ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_remainder_time_layout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/dialog_remainder_cancel_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:fontFamily="@font/roboto_medium"
+        android:includeFontPadding="false"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/cancel"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/_15ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_remainder_time_layout"
+        app:layout_constraintEnd_toStartOf="@id/dialog_remainder_save_option_textView" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
