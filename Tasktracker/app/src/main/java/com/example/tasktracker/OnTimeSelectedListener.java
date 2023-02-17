@@ -1,4 +1,7 @@
 package com.example.tasktracker;
 
-public class OnTimeSelectedListener {
+public interface OnTimeSelectedListener {
+
+    void onTimeSelected(String time);
+
 }

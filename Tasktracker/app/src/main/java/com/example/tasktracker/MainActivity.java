@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements ItemClickListener {
 
-    public static final String NOTE_EXTRA = "note_for_update";
+
     private MainActivityViewModel mainActivityViewModel;
     private ActivityMainBinding activityMainBinding;
     private MainHandler mainHandler;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private AlertDialog dialogUnpinNote;
     List<Note> noteList;
     public static final String IS_EDIT_MODE = "isEditMode";
+    public static final String NOTE_EXTRA = "note_for_update";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,6 +205,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             Toast.makeText(MainActivity.this, "Add note", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,AddEditActivity.class);
             intent.putExtra(IS_EDIT_MODE,false);
+            startActivity(intent);
+        }
+
+        public void onAlarmClick(View view){
+            Toast.makeText(MainActivity.this, "Alarm", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,RemainderDetailsActivity.class);
             startActivity(intent);
         }
 

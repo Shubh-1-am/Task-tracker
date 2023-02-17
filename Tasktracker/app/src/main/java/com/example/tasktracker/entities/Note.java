@@ -158,7 +158,15 @@ public class Note extends BaseObservable implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Note note = (Note) o;
         // check null
-        return Objects.equals(id, note.id) && Objects.equals(title, note.title) && Objects.equals(description, note.description) && Objects.equals(isPinned, note.isPinned) && Objects.equals(lastUpdateDateTime, note.lastUpdateDateTime) && Objects.equals(noteBackground, note.noteBackground) && Objects.equals(noteImage, note.noteImage) && Objects.equals(url, note.url) && Objects.equals(markdownLinkText, note.markdownLinkText);
+        return Objects.equals(id, note.id) &&
+                Objects.equals(title, note.title) &&
+                Objects.equals(description, note.description) &&
+                Objects.equals(isPinned, note.isPinned) &&
+                Objects.equals(lastUpdateDateTime, note.lastUpdateDateTime) &&
+                Objects.equals(noteBackground, note.noteBackground) &&
+                Objects.equals(noteImage, note.noteImage) &&
+                Objects.equals(url, note.url) &&
+                Objects.equals(markdownLinkText, note.markdownLinkText);
     }
 
     @Override

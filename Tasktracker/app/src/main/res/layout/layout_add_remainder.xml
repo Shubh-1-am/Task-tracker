@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_add_remainder_dialog_container"
     android:layout_gravity="center"
     android:layout_margin="@dimen/_10sdp"
     android:background="@drawable/background_dialog">
@@ -74,6 +75,7 @@
             app:tint="@color/colorIcon"/>
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dialog_remainder_date_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
@@ -103,6 +105,7 @@
             app:tint="@color/colorIcon"/>
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dialog_remainder_time_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"

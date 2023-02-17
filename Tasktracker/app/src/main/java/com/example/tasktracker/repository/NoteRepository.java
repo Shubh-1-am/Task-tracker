@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.tasktracker.DAO.NoteDAO;
 import com.example.tasktracker.database.NoteDatabase;
 import com.example.tasktracker.entities.Note;
+import com.example.tasktracker.entities.Remainder;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -23,8 +24,6 @@ public class NoteRepository {
         noteDAO = noteDatabase.noteDAO();
         allNotes = noteDAO.getAllNotes();
         allPinnedNotes = noteDAO.getAllPinnedNotes();
-
-
     }
 
     public void insert(Note note){
@@ -71,4 +70,6 @@ public class NoteRepository {
     public LiveData<List<Note>> getAllNotesAccordingToSearchQuery(String searchQuery){
         return noteDAO.getAllNotesAccordingToSearchQuery(searchQuery);
     }
+
+
 }
