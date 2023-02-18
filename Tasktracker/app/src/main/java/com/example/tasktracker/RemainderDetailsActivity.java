@@ -4,10 +4,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tasktracker.Adapter.RemainderAdapter;
+import com.example.tasktracker.broadcastReceiver.AlarmBroadcast;
 import com.example.tasktracker.databinding.ActivityRemainderDetailsBinding;
 import com.example.tasktracker.entities.Remainder;
 import com.example.tasktracker.viewModel.RemainderDetailsActivityViewModel;
@@ -23,6 +30,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RemainderDetailsActivity extends AppCompatActivity {
@@ -32,7 +40,10 @@ public class RemainderDetailsActivity extends AppCompatActivity {
     private RemainderDetailsActivityViewModel remainderDetailsActivityViewModel;
 
     private AlertDialog dialogAddRemainder;
-    private final Calendar calendar = Calendar.getInstance();
+
+    private RecyclerView recyclerView;
+    private RemainderAdapter remainderAdapter;
+
 
 
 
@@ -52,11 +63,30 @@ public class RemainderDetailsActivity extends AppCompatActivity {
 
             }
         });
+
+        recyclerView = activityRemainderDetailsBinding.remainderActivityRecyclerView;
+        remainderAdapter = new RemainderAdapter(RemainderDetailsActivity.this);
+        remainderAdapter.setHasStableIds(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(RemainderDetailsActivity.this));
+        recyclerView.setHasFixedSize(true);
+        showRemainders();
+
+
+    }
+
+    private void showRemainders() {
+
+        remainderDetailsActivityViewModel.getAllRemainders().observe(this, remainders -> {
+            remainderAdapter.setRemainderList(remainders);
+            recyclerView.setAdapter(remainderAdapter);
+        });
     }
 
 
     @SuppressLint("MissingInflatedId")
     private void showAddRemainderDialog() {
+
+        Calendar calendar = Calendar.getInstance();
 
         if (dialogAddRemainder == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RemainderDetailsActivity.this);
@@ -75,10 +105,14 @@ public class RemainderDetailsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     getDate(new OnDateSelectedListener() {
                         @Override
-                        public void onDateSelected(String date) {
+                        public void onDateSelected(String date, int year, int month, int dayOfMonth) {
                             if (!date.equals("")) {
                                 dateTextView.setText(date);
                                 dateTextView.setTextColor(getColor(R.color.white));
+                                calendar.set(Calendar.YEAR, year);
+                                calendar.set(Calendar.MONTH, month);
+                                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                             }
                         }
                     });
@@ -91,10 +125,13 @@ public class RemainderDetailsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     getTime(new OnTimeSelectedListener() {
                         @Override
-                        public void onTimeSelected(String time) {
+                        public void onTimeSelected(String time, int hourOfDay, int minute){
                             if (!time.equals("")) {
                                 timeTextView.setText(time);
                                 timeTextView.setTextColor(getColor(R.color.white));
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+                                calendar.set(Calendar.SECOND, 0);
                             }
                         }
                     });
@@ -119,7 +156,14 @@ public class RemainderDetailsActivity extends AppCompatActivity {
                         remainder.setTitle(titleEditText.getText().toString().trim());
                         remainder.setDate(dateTextView.getText().toString().trim());
                         remainder.setTime(timeTextView.getText().toString().trim());
-//                        remainderDetailsActivityViewModel.insert(remainder);
+                        remainderDetailsActivityViewModel.insert(remainder);
+
+                        Intent intent = new Intent(RemainderDetailsActivity.this, AlarmBroadcast.class);
+                        intent.putExtra("title", remainder.getTitle());
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(RemainderDetailsActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
                         Toast.makeText(RemainderDetailsActivity.this, ""+remainder.getTitle()+ " " +remainder.getDate()+" "+remainder.getTime(), Toast.LENGTH_SHORT).show();
                         dialogAddRemainder.dismiss();
                     }
@@ -140,6 +184,7 @@ public class RemainderDetailsActivity extends AppCompatActivity {
     }
 
     private void getTime(OnTimeSelectedListener listener) {
+        Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 RemainderDetailsActivity.this,
                 (view, hourOfDay, minute) -> {
@@ -153,7 +198,7 @@ public class RemainderDetailsActivity extends AppCompatActivity {
                     }
                     String suffix = hourOfDay >= 12 ? "PM" : "AM";
                     String selectedTime = String.format(Locale.getDefault(), "%02d:%02d %s", hour, minute, suffix);
-                    listener.onTimeSelected(selectedTime);
+                    listener.onTimeSelected(selectedTime, hourOfDay, minute);
 
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -166,7 +211,7 @@ public class RemainderDetailsActivity extends AppCompatActivity {
 
 
     private void getDate(OnDateSelectedListener listener) {
-
+        Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 RemainderDetailsActivity.this,
                 (view, year, month, dayOfMonth) -> {
@@ -175,7 +220,7 @@ public class RemainderDetailsActivity extends AppCompatActivity {
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                    String selectedDate = dayOfMonth + "/" + month + "/" + year;
                     Toast.makeText(this, "dekhooooo"+selectedDate, Toast.LENGTH_SHORT).show();
-                    listener.onDateSelected(selectedDate);
+                    listener.onDateSelected(selectedDate, year, month, dayOfMonth);
 
                 },
                 calendar.get(Calendar.YEAR),
