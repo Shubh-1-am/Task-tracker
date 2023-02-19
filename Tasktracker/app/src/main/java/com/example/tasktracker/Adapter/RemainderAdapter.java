@@ -34,6 +34,7 @@ public class RemainderAdapter extends RecyclerView.Adapter<RemainderViewHolder>{
     public void onBindViewHolder(@NonNull RemainderViewHolder holder, int position) {
         Remainder currentRemainder = remainderList.get(position);
         holder.setRemainder(currentRemainder);
+        holder.setContext(context);
 
     }
 
