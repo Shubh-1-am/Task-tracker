@@ -50,6 +50,13 @@ public class RemainderRepository {
         executor.execute(remainderDAO::deleteAllRemainders);
     }
 
+    public void deleteByID(int ID){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            remainderDAO.deleteByID(ID);
+        });
+    }
+
     public LiveData<List<Remainder>> getAllRemainders() {
         return allRemainders;
     }

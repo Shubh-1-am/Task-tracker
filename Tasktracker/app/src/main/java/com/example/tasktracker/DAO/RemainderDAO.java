@@ -26,6 +26,9 @@ public interface RemainderDAO {
     @Query("DELETE FROM remainder_table")
     void deleteAllRemainders();
 
+    @Query("DELETE FROM remainder_table WHERE id = :id")
+    void deleteByID(int id);
+
     @Query("SELECT * FROM remainder_table ORDER BY DATE ASC, TIME ASC")
     LiveData<List<Remainder>> getAllRemainders();
 

@@ -40,6 +40,8 @@ public class RemainderDetailsActivityViewModel extends AndroidViewModel {
         remainderRepository.deleteAllRemainders();
     }
 
+    public void deleteByID(int ID){remainderRepository.deleteByID(ID);}
+
     public LiveData<List<Remainder>> getAllRemainders(){
         return allRemainders;
     }
