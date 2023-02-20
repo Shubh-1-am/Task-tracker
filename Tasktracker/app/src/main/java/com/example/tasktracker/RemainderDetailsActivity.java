@@ -15,6 +15,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -55,6 +57,8 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
     public static OnNotifyRemainderListener onNotifyRemainderListener;
 
+    private UtilApplication utilApplication;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +84,8 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
             }
         });
 
-
+        utilApplication = UtilApplication.getInstance();
+        utilApplication.setActivity(this);
 
 
         recyclerView = activityRemainderDetailsBinding.remainderActivityRecyclerView;
@@ -211,26 +216,29 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
                         timeTextView.setError("Time cannot be empty");
                     }
                     else {
-                        Remainder currentRemainder;
-                        if (isEditMode){
-                            currentRemainder = remainder;
-                            deleteAlarm(currentRemainder.getId());
-                            currentRemainder.setTitle(titleEditText.getText().toString().trim());
-                            currentRemainder.setDate(dateTextView.getText().toString().trim());
-                            currentRemainder.setTime(timeTextView.getText().toString().trim());
-                            remainderDetailsActivityViewModel.update(currentRemainder);
-                            Toast.makeText(RemainderDetailsActivity.this, "Remainder Updated!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            currentRemainder = new Remainder();
-                            currentRemainder.setTitle(titleEditText.getText().toString().trim());
-                            currentRemainder.setDate(dateTextView.getText().toString().trim());
-                            currentRemainder.setTime(timeTextView.getText().toString().trim());
-                            remainderDetailsActivityViewModel.insert(currentRemainder);
-                            Toast.makeText(RemainderDetailsActivity.this, "Remainder Added", Toast.LENGTH_SHORT).show();
-                        }
 
-                        setAlarm(currentRemainder, calendar);
-                        dialogAddRemainder.dismiss();
+                            Remainder currentRemainder;
+                            if (isEditMode){
+                                currentRemainder = remainder;
+                                deleteAlarm(currentRemainder.getId());
+                                currentRemainder.setTitle(titleEditText.getText().toString().trim());
+                                currentRemainder.setDate(dateTextView.getText().toString().trim());
+                                currentRemainder.setTime(timeTextView.getText().toString().trim());
+                                remainderDetailsActivityViewModel.update(currentRemainder);
+                                Toast.makeText(RemainderDetailsActivity.this, "Remainder Updated!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                currentRemainder = new Remainder();
+                                currentRemainder.setTitle(titleEditText.getText().toString().trim());
+                                currentRemainder.setDate(dateTextView.getText().toString().trim());
+                                currentRemainder.setTime(timeTextView.getText().toString().trim());
+                                remainderDetailsActivityViewModel.insert(currentRemainder);
+                                Toast.makeText(RemainderDetailsActivity.this, "Remainder Added", Toast.LENGTH_SHORT).show();
+                            }
+
+                            setAlarm(currentRemainder, calendar);
+                            dialogAddRemainder.dismiss();
+
+
                     }
 
                 }
@@ -249,16 +257,22 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
     }
 
     private void setAlarm(Remainder remainder, Calendar calendar) {
-        Toast.makeText(this, "In set Alarm method", Toast.LENGTH_SHORT).show();
-        Intent iBroadCast = new Intent(RemainderDetailsActivity.this, AlarmBroadcast.class);
-        iBroadCast.putExtra(REMAINDER_TITLE, remainder.getTitle());
-        iBroadCast.putExtra(REMAINDER_ID,remainder.getId());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(RemainderDetailsActivity.this, remainder.getId(), iBroadCast, PendingIntent.FLAG_UPDATE_CURRENT);
+            Toast.makeText(this, "In set Alarm method", Toast.LENGTH_SHORT).show();
+            Intent iBroadCast = new Intent(RemainderDetailsActivity.this, AlarmBroadcast.class);
+            iBroadCast.putExtra(REMAINDER_TITLE, remainder.getTitle());
+            iBroadCast.putExtra(REMAINDER_ID,remainder.getId());
+            try{
+//                iBroadCast.putExtra(REMAINDER_LISTENER, (OnNotifyRemainderListener)this);
+            }catch (Exception e){
+                Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(RemainderDetailsActivity.this, remainder.getId(), iBroadCast, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
-        Toast.makeText(RemainderDetailsActivity.this, ""+remainder.getTitle()+ " " +remainder.getDate()+" "+remainder.getTime(), Toast.LENGTH_SHORT).show();
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+            Toast.makeText(RemainderDetailsActivity.this, ""+remainder.getTitle()+ " " +remainder.getDate()+" "+remainder.getTime(), Toast.LENGTH_SHORT).show();
+
     }
 
     private void deleteAlarm(int ID){
@@ -349,4 +363,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
 
     }
+
+
+
 }
