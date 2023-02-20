@@ -9,8 +9,7 @@ import com.example.tasktracker.entities.Remainder;
 
 import java.io.Serializable;
 
-public interface OnNotifyRemainderListener{
-
+public interface OnNotifyRemainderListener {
     void onNotifyRemainder(int ID);
 
 }
