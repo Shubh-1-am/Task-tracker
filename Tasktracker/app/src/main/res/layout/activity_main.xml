@@ -157,7 +157,7 @@
     
         <ImageView
             android:id="@+id/add_activity_imageView"
-            android:onClick="@{handler.onAddNoteClick}"
+            android:onClick="@{handler::onAddNoteClick}"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginEnd="@dimen/_30sdp"
