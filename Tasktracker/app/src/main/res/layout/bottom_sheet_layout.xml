@@ -65,7 +65,7 @@
 
                 <FrameLayout
                     android:id="@+id/color_1"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -86,7 +86,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_2"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -107,7 +107,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_3"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -128,7 +128,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_4"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -149,7 +149,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_5"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -170,7 +170,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_6"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -191,7 +191,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_7"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -212,7 +212,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_8"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -233,7 +233,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_9"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -254,7 +254,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_10"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -275,7 +275,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_11"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -296,7 +296,7 @@
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/color_12"
-                    android:onClick="@{SecondaryHandler.onColorSelected}"
+                    android:onClick="@{SecondaryHandler::onColorSelected}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -332,7 +332,7 @@
                 android:layout_margin="@dimen/_10sdp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_1"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -342,7 +342,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_2"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -351,7 +351,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_3"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -360,7 +360,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_4"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -370,7 +370,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
 
                     android:id="@+id/bg_image_5"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -379,7 +379,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_6"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -388,7 +388,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_7"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -397,7 +397,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_8"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -406,7 +406,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_9"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -415,7 +415,7 @@
                     app:tint="@color/white"/>
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/bg_image_10"
-                    android:onClick="@{SecondaryHandler.onBackgroundImageSelected}"
+                    android:onClick="@{SecondaryHandler::onBackgroundImageSelected}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_8sdp"
@@ -426,9 +426,6 @@
 
             </LinearLayout>
         </HorizontalScrollView>
-
-
-
 
     </LinearLayout>
 </layout>
