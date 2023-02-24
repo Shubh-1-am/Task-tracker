@@ -5,7 +5,8 @@ import android.app.Application;
 public class UtilApplication extends Application {
 
         private static UtilApplication instance;
-        private RemainderDetailsActivity activity;
+        private RemainderDetailsActivity remainderDetailsActivity;
+        private AddEditActivity addEditActivity;
 
         public static UtilApplication getInstance() {
             if (instance == null) {
@@ -14,11 +15,20 @@ public class UtilApplication extends Application {
             return instance;
         }
 
-    public void setActivity(RemainderDetailsActivity activity) {
-        this.activity = activity;
+
+    public RemainderDetailsActivity getRemainderDetailsActivity() {
+        return remainderDetailsActivity;
     }
 
-    public RemainderDetailsActivity getActivity() {
-        return activity;
+    public void setRemainderDetailsActivity(RemainderDetailsActivity remainderDetailsActivity) {
+        this.remainderDetailsActivity = remainderDetailsActivity;
+    }
+
+    public AddEditActivity getAddEditActivity() {
+        return addEditActivity;
+    }
+
+    public void setAddEditActivity(AddEditActivity addEditActivity) {
+        this.addEditActivity = addEditActivity;
     }
 }

@@ -1,8 +1,11 @@
 package com.example.tasktracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,13 +15,14 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +39,11 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RemainderDetailsActivity extends AppCompatActivity implements OnNotifyRemainderListener, OnDeleteRemainderListener, OnEditRemainderListener{
 
 
+    public static final String IS_REMAINDER_FROM_REMAINDER_DETAILS_ACTIVITY = "is_remainder_from_remainder_details_activity";
     private ActivityRemainderDetailsBinding activityRemainderDetailsBinding;
     private RemainderDetailsActivityViewModel remainderDetailsActivityViewModel;
 
@@ -53,7 +56,6 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
     public static final String REMAINDER_TITLE = "remainder_title";
     public static final String REMAINDER_ID = "remainder_id";
-    public static final String REMAINDER_LISTENER = "remainder_OnNotifyRemainderListener";
 
     public static OnNotifyRemainderListener onNotifyRemainderListener;
 
@@ -77,6 +79,13 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
             }
         });
 
+        activityRemainderDetailsBinding.remainderEmptyListImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddRemainderDialog(false, null);
+            }
+        });
+
         activityRemainderDetailsBinding.remainderActivityBackImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,9 +94,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
         });
 
         utilApplication = UtilApplication.getInstance();
-        utilApplication.setActivity(this);
-
-
+        utilApplication.setRemainderDetailsActivity(this);
         recyclerView = activityRemainderDetailsBinding.remainderActivityRecyclerView;
         remainderAdapter = new RemainderAdapter(RemainderDetailsActivity.this);
         remainderAdapter.setHasStableIds(true);
@@ -123,7 +130,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
     private void showSearchedRemainder(String searchQuery) {
         remainderDetailsActivityViewModel.getAllRemaindersAccordingToSearchQuery("%" + searchQuery + "%").observe(this, remainders -> {
             remainderList = remainders;
-            runOnUiThread(this::setAdapter);
+            runOnUiThread(() -> setAdapter(remainderList));
         });
     }
 
@@ -131,19 +138,33 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
         remainderDetailsActivityViewModel.getAllRemainders().observe(this, remainders -> {
             remainderList = remainders;
+            Log.d("TAG", "showAllRemainders: 1");
             if (remainderList == null || remainderList.size() == 0){
+                Log.d("TAG", "showAllRemainders: 2");
+                activityRemainderDetailsBinding.remainderEmptyListImageView.setVisibility(View.VISIBLE);
+                Log.d("TAG", "showAllRemainders: 3");
                 Toast.makeText(this, "Empty list", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "showAllRemainders: 4");
             }
             else {
-              runOnUiThread(this::setAdapter);
+
+                runOnUiThread(() -> {
+                    activityRemainderDetailsBinding.remainderEmptyListImageView.setVisibility(View.GONE);
+                    Log.d("TAG", "showAllRemainders: 5");
+                    setAdapter(remainderList);
+                    Log.d("TAG", "showAllRemainders: 6");
+                });
             }
 
         });
     }
 
-    private void setAdapter() {
+    private void setAdapter(List<Remainder> remainderList) {
         remainderAdapter.setRemainderList(remainderList);
+        Log.d("TAG", "showAllRemainders: 7");
+        Log.d("TAG", "setAdapter: "+remainderList.size());
         recyclerView.setAdapter(remainderAdapter);
+        Log.d("TAG", "showAllRemainders: 8");
     }
 
 
@@ -155,12 +176,12 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
         if (dialogAddRemainder == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RemainderDetailsActivity.this);
             View view = LayoutInflater.from(this).inflate(R.layout.layout_add_remainder, (ViewGroup) findViewById(R.id.layout_add_remainder_dialog_container), false);
+
             builder.setView(view);
             dialogAddRemainder = builder.create();
             if (dialogAddRemainder.getWindow() != null) {
                 dialogAddRemainder.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
-
             MaterialTextView dateTextView = view.findViewById(R.id.dialog_remainder_date_textView);
             MaterialTextView timeTextView = view.findViewById(R.id.dialog_remainder_time_textView);
             EditText titleEditText = view.findViewById(R.id.dialog_remainder_title_editText);
@@ -209,10 +230,10 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
                     if (titleEditText.getText().toString().trim().isEmpty()) {
                         titleEditText.setError("Title cannot be empty");
                     }
-                    else if (dateTextView.getText().toString().trim().isEmpty()) {
+                    else if (dateTextView.getText().toString().trim().isEmpty() || dateTextView.getText().toString().trim().equals("Select Date")) {
                         dateTextView.setError("Date cannot be empty");
                     }
-                    else if (timeTextView.getText().toString().trim().isEmpty()) {
+                    else if (timeTextView.getText().toString().trim().isEmpty() || timeTextView.getText().toString().trim().equals("Select Time")){
                         timeTextView.setError("Time cannot be empty");
                     }
                     else {
@@ -231,14 +252,14 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
                                 currentRemainder.setTitle(titleEditText.getText().toString().trim());
                                 currentRemainder.setDate(dateTextView.getText().toString().trim());
                                 currentRemainder.setTime(timeTextView.getText().toString().trim());
+                                int lastInsertedId = remainderDetailsActivityViewModel.getLastInsertedIRemainderId();
+                                currentRemainder.setId(lastInsertedId + 1);
                                 remainderDetailsActivityViewModel.insert(currentRemainder);
                                 Toast.makeText(RemainderDetailsActivity.this, "Remainder Added", Toast.LENGTH_SHORT).show();
                             }
 
                             setAlarm(currentRemainder, calendar);
                             dialogAddRemainder.dismiss();
-
-
                     }
 
                 }
@@ -258,21 +279,15 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
     private void setAlarm(Remainder remainder, Calendar calendar) {
 
-            Toast.makeText(this, "In set Alarm method", Toast.LENGTH_SHORT).show();
             Intent iBroadCast = new Intent(RemainderDetailsActivity.this, AlarmBroadcast.class);
             iBroadCast.putExtra(REMAINDER_TITLE, remainder.getTitle());
             iBroadCast.putExtra(REMAINDER_ID,remainder.getId());
-            try{
-//                iBroadCast.putExtra(REMAINDER_LISTENER, (OnNotifyRemainderListener)this);
-            }catch (Exception e){
-                Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            iBroadCast.putExtra(IS_REMAINDER_FROM_REMAINDER_DETAILS_ACTIVITY, true);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(RemainderDetailsActivity.this, remainder.getId(), iBroadCast, PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
             Toast.makeText(RemainderDetailsActivity.this, ""+remainder.getTitle()+ " " +remainder.getDate()+" "+remainder.getTime(), Toast.LENGTH_SHORT).show();
-
     }
 
     private void deleteAlarm(int ID){
@@ -291,7 +306,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
 
-                    // Convert the hourOfDay to 12-hour format
+
                     int hour = hourOfDay % 12;
                     if (hour == 0) {
                         hour = 12;
@@ -318,8 +333,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                   String selectedDate = dayOfMonth + "/" + month + "/" + year;
-                    Toast.makeText(this, "dekhooooo"+selectedDate, Toast.LENGTH_SHORT).show();
+                    String selectedDate = dayOfMonth + "/" + month + "/" + year;
                     listener.onDateSelected(selectedDate, year, month, dayOfMonth);
 
                 },
@@ -329,7 +343,6 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
         );
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
-
     }
 
     @Override
@@ -341,16 +354,16 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
     public void onDeleteRemainder(Remainder remainder) {
         remainderDetailsActivityViewModel.delete(remainder);
         deleteAlarm(remainder.getId());
+        remainderList.remove(remainder);
+        setAdapter(remainderList);
         Toast.makeText(this, "Remainder deleted successfully", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
     public void onEditRemainder(Remainder remainder) {
-        if (dialogAddRemainder == null) {
-            showAddRemainderDialog(true,remainder);
-        }
 
+        showAddRemainderDialog(true,remainder);
         EditText titleEditText =  (EditText)(dialogAddRemainder.findViewById(R.id.dialog_remainder_title_editText));
         MaterialTextView dateTextView = (MaterialTextView) dialogAddRemainder.findViewById(R.id.dialog_remainder_date_textView);
         MaterialTextView timeTextView = (MaterialTextView) dialogAddRemainder.findViewById(R.id.dialog_remainder_time_textView);
@@ -360,10 +373,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
             dateTextView.setText(remainder.getDate());
             timeTextView.setText(remainder.getTime());
         }
-
-
     }
-
 
 
 }

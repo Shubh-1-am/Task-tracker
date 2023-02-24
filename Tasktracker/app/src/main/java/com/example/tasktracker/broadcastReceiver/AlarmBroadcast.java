@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.tasktracker.AddEditActivity;
 import com.example.tasktracker.OnNotifyRemainderListener;
 import com.example.tasktracker.R;
 import com.example.tasktracker.RemainderDetailsActivity;
@@ -40,9 +41,18 @@ public class AlarmBroadcast extends BroadcastReceiver {
 
         String title = intent.getStringExtra(RemainderDetailsActivity.REMAINDER_TITLE);
         int ID = intent.getIntExtra(RemainderDetailsActivity.REMAINDER_ID,-1);
+        boolean isFromRemainderDetailsActivity = intent.getBooleanExtra(RemainderDetailsActivity.IS_REMAINDER_FROM_REMAINDER_DETAILS_ACTIVITY,false);
         UtilApplication app = UtilApplication.getInstance();
-        RemainderDetailsActivity activity = app.getActivity();
-        listener = (OnNotifyRemainderListener) activity;
+
+        Toast.makeText(context, ""+context.getClass().getSimpleName(), Toast.LENGTH_LONG).show();
+        if (isFromRemainderDetailsActivity){
+            RemainderDetailsActivity activity = app.getRemainderDetailsActivity();;
+            listener = (OnNotifyRemainderListener) activity;
+        } else  {
+            AddEditActivity activity = app.getAddEditActivity();
+            listener = (OnNotifyRemainderListener) activity;
+            Toast.makeText(context, "testingggggggggggg", Toast.LENGTH_SHORT).show();
+        }
 
 
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -83,7 +93,8 @@ public class AlarmBroadcast extends BroadcastReceiver {
         }
         nm.notify(NOTIFICATION_ID,notification);
 
-        listener.onNotifyRemainder(ID);
-
+            listener.onNotifyRemainder(ID);
+        Toast.makeText(context, ""+ID, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
     }
 }

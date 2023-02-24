@@ -12,7 +12,7 @@ import com.example.tasktracker.BR;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity(tableName = "remainder_table")
+@Entity(tableName = "remainders_table")
 public class Remainder extends BaseObservable implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
@@ -75,6 +75,7 @@ public class Remainder extends BaseObservable implements Serializable {
         this.time = time;
         notifyPropertyChanged(BR.time);
     }
+
 
     @Override
     public boolean equals(Object o) {

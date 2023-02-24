@@ -13,8 +13,6 @@ import com.example.tasktracker.repository.RemainderRepository;
 import java.util.List;
 
 public class RemainderDetailsActivityViewModel extends AndroidViewModel {
-
-
     private RemainderRepository remainderRepository;
     private LiveData<List<Remainder>> allRemainders;
 
@@ -23,7 +21,6 @@ public class RemainderDetailsActivityViewModel extends AndroidViewModel {
         remainderRepository = new RemainderRepository(application);
         allRemainders = remainderRepository.getAllRemainders();
     }
-
     public void insert(Remainder remainder){
         remainderRepository.insert(remainder);
     }
@@ -42,6 +39,10 @@ public class RemainderDetailsActivityViewModel extends AndroidViewModel {
 
     public void deleteByID(int ID){remainderRepository.deleteByID(ID);}
 
+    public int getLastInsertedIRemainderId(){
+        return remainderRepository.getLastInsertedIRemainderId();
+    }
+
     public LiveData<List<Remainder>> getAllRemainders(){
         return allRemainders;
     }
@@ -49,7 +50,7 @@ public class RemainderDetailsActivityViewModel extends AndroidViewModel {
     public LiveData<List<Remainder>> getAllRemaindersAccordingToSearchQuery(String searchQuery){
         return remainderRepository.getAllRemaindersAccordingToSearchQuery(searchQuery);
     }
-
-
-
+    public LiveData<Remainder> getRemainderByID(int id){
+        return remainderRepository.getRemainderByID(id);
+    }
 }

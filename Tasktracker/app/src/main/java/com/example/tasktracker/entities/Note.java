@@ -43,8 +43,11 @@ public class Note extends BaseObservable implements Serializable {
     @ColumnInfo(name = "markdown_link_text")
     private String markdownLinkText;
 
+    @ColumnInfo(name = "remainder_id")
+    private int remainder_id;
 
-    public Note(int id, String title, String description, boolean isPinned, String lastUpdateDateTime, int noteBackground, String noteImage, String url, String markdownLinkText) {
+
+    public Note(int id, String title, String description, boolean isPinned, String lastUpdateDateTime, int noteBackground, String noteImage, String url, String markdownLinkText, int remainder_id) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,6 +57,7 @@ public class Note extends BaseObservable implements Serializable {
         this.noteImage = noteImage;
         this.url = url;
         this.markdownLinkText = markdownLinkText;
+        this.remainder_id = remainder_id;
     }
 
     @Ignore
@@ -152,6 +156,16 @@ public class Note extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.markdownLinkText);
     }
 
+    @Bindable
+    public int getRemainder_id() {
+        return remainder_id;
+    }
+
+    public void setRemainder_id(int remainder_id) {
+        this.remainder_id = remainder_id;
+        notifyPropertyChanged(BR.remainder_id);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -171,6 +185,6 @@ public class Note extends BaseObservable implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, isPinned, lastUpdateDateTime, noteBackground, noteImage, url, markdownLinkText);
+        return Objects.hash(id, title, description, isPinned, lastUpdateDateTime, noteBackground, noteImage, url, markdownLinkText,remainder_id);
     }
 }

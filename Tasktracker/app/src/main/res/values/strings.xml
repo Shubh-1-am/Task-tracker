@@ -31,4 +31,5 @@
     <string name="select_time">Select Time</string>
     <string name="SAVE">SAVE</string>
     <string name="remainder">Remainder!</string>
+    <string name="search_remainders">Search remainders</string>
 </resources>

@@ -50,4 +50,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<List<Note>> getAllNotesAccordingToSearchQuery(String searchQuery){
         return noteRepository.getAllNotesAccordingToSearchQuery(searchQuery);
     }
+
+
 }

@@ -15,6 +15,7 @@
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_8sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
         android:background="@drawable/background_note_recyclerview_item"
         android:orientation="vertical">
 
@@ -48,7 +49,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:padding="@dimen/_2sdp"
                 android:scaleType="fitXY"
-                android:src="@drawable/drawing_pin"
+                android:src="@drawable/push_pin_yellow"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

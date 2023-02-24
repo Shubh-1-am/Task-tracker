@@ -57,7 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder>{
         return position;
     }
 
-        public void setNoteList(List<Note> newNoteList) {
+   public void setNoteList(List<Note> newNoteList) {
         if (noteList == null) {
             noteList = newNoteList;
         } else {
@@ -66,6 +66,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder>{
             noteList.clear();
             noteList.addAll(newNoteList);
             diffResult.dispatchUpdatesTo(this);
+
         }
 
     }

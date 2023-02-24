@@ -56,12 +56,13 @@ public class RemainderAdapter extends RecyclerView.Adapter<RemainderViewHolder>{
     public void setRemainderList(List<Remainder> newRemainderList) {
         if (remainderList == null) {
             remainderList = newRemainderList;
-            notifyItemRangeInserted(0, newRemainderList.size());
+
         } else {
-            RemainderDiffUtilCallback remainderDiffUtilCallback = new RemainderDiffUtilCallback(remainderList, newRemainderList);
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(remainderDiffUtilCallback);
-            remainderList = newRemainderList;
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RemainderDiffUtilCallback(remainderList, newRemainderList),false);
+            remainderList.clear();
+            remainderList.addAll(newRemainderList);
             diffResult.dispatchUpdatesTo(this);
+
         }
     }
 }

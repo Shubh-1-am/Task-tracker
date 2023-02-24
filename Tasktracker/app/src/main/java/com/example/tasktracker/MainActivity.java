@@ -2,6 +2,7 @@ package com.example.tasktracker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -16,12 +19,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.tasktracker.Adapter.NoteAdapter;
+import com.example.tasktracker.broadcastReceiver.AlarmBroadcast;
 import com.example.tasktracker.databinding.ActivityMainBinding;
 import com.example.tasktracker.entities.Note;
 import com.example.tasktracker.viewModel.MainActivityViewModel;
@@ -97,12 +102,18 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public void showAllNotes(){
             mainActivityViewModel.getAllNotes().observe(this, notes -> {
                 noteList = notes;
+                Log.d("TAG", "showAllNotes: 1");
                 if (noteList == null || noteList.size() == 0) {
+                    Log.d("TAG", "showAllNotes: 2");
                     activityMainBinding.emptyListImageView.setVisibility(View.VISIBLE);
+                    Log.d("TAG", "showAllNotes: 3");
                 } else {
                     runOnUiThread(() -> {
+                        Log.d("TAG", "showAllNotes: 4");
                         activityMainBinding.emptyListImageView.setVisibility(View.GONE);
+                        Log.d("TAG", "showAllNotes: 5");
                         setAdapter(noteList);
+                        Log.d("TAG", "showAllNotes: 6");
                     });
                 }
             });
@@ -120,8 +131,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
 
     private void setAdapter(List<Note> noteList) {
+        Log.d("TAG", "showAllNotes: 7");
         noteAdapter.setNoteList(noteList);
+        Log.d("TAG", "setAdapter: "+noteList.size());
+        Log.d("TAG", "showAllNotes: 8");
         recyclerView.setAdapter(noteAdapter);
+        Log.d("TAG", "showAllNotes: 9");
     }
 
     @Override
@@ -149,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 public void onClick(View v) {
                     dialogDeleteNote.dismiss();
                     mainActivityViewModel.delete(note);
+                    noteList.remove(note);
+                    setAdapter(noteList);
+                    Toast.makeText(MainActivity.this, "IDDDDDD  "+note.getId(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -162,6 +180,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         dialogDeleteNote.show();
     }
 
+
+
     @Override
     public void onPinClick(Note note) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -171,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         if (dialogUnpinNote.getWindow() != null){
             dialogUnpinNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
+
         view.findViewById(R.id.dialog_yes_unpin_option_textView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +209,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         dialogUnpinNote.show();
-
     }
 
     @Override

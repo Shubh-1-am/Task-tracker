@@ -23,18 +23,25 @@ public interface RemainderDAO {
     @Delete
     void delete(Remainder remainder);
 
-    @Query("DELETE FROM remainder_table")
+    @Query("DELETE FROM remainders_table")
     void deleteAllRemainders();
 
-    @Query("DELETE FROM remainder_table WHERE id = :id")
+    @Query("SELECT MAX(id) FROM remainders_table")
+    int getLastInsertedIRemainderId();
+
+
+
+    @Query("DELETE FROM remainders_table WHERE id = :id")
     void deleteByID(int id);
 
-    @Query("SELECT * FROM remainder_table ORDER BY DATE ASC, TIME ASC")
+    @Query("SELECT * FROM remainders_table ORDER BY DATE ASC, TIME ASC")
     LiveData<List<Remainder>> getAllRemainders();
 
-    @Query("SELECT * FROM remainder_table WHERE title LIKE :searchQuery OR date LIKE :searchQuery OR time LIKE :searchQuery ORDER BY DATE ASC, TIME ASC")
+    @Query("SELECT * FROM remainders_table WHERE title LIKE :searchQuery OR date LIKE :searchQuery OR time LIKE :searchQuery ORDER BY DATE ASC, TIME ASC")
     LiveData<List<Remainder>> getAllRemaindersAccordingToSearchQuery(String searchQuery);
 
+    @Query("SELECT * FROM remainders_table WHERE id = :id")
+    LiveData<Remainder> getRemainderByID(int id);
 
 
 }

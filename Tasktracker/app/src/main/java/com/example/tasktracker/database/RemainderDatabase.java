@@ -19,7 +19,7 @@ public abstract class RemainderDatabase extends RoomDatabase {
     public static synchronized RemainderDatabase getInstance(Context context){
         if(instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    RemainderDatabase.class, "remainder_database")
+                    RemainderDatabase.class, "remainders_database")
                     .fallbackToDestructiveMigration()
                     .build();
         }

@@ -2,6 +2,7 @@ package com.example.tasktracker.Adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class RemainderViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 editRemainderListener.onEditRemainder(currentRemainder);
+                Toast.makeText(context, "Hiiii", Toast.LENGTH_SHORT).show();
             }
         });
 
