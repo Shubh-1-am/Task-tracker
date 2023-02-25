@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task tracker</string>
+    <string name="app_name">TaskTrek</string>
     <string name="to_do_list">To Do List</string>
     <string name="search_icon">search_icon</string>
     <string name="search_notes">Search notes</string>
@@ -32,4 +32,5 @@
     <string name="SAVE">SAVE</string>
     <string name="remainder">Remainder!</string>
     <string name="search_remainders">Search remainders</string>
+    <string name="splash_image">splash_image</string>
 </resources>
