@@ -168,8 +168,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
         activityAddEditBinding.delete2ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // At every click on this button, delete the last markdown string [title](url) from currentNote.getMarkdownLinkText()
-                // and update the markdownLinkText in currentNote
                 manageMarkdownStyleBar();
                 String markdownLinkText = currentNote.getMarkdownLinkText();
 
@@ -265,7 +263,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
                 @Override
                 public void onChanged(Remainder remainder) {
                     if (remainder != null) {
-                        Toast.makeText(AddEditActivity.this, "" + remainder.getTitle() + " " + remainder.getDate(), Toast.LENGTH_SHORT).show();
                         activityAddEditBinding.addRemainderTextview.setText(remainder.getDate() + " " + remainder.getTime());
                         activityAddEditBinding.addRemainderTextview.setTextColor(getColor(R.color.white));
                     }
@@ -445,8 +442,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
                     }
                 }).build();
         markwon.setMarkdown(urlTextView, currentNote.getMarkdownLinkText());
-        Log.d("TAG", "displayUrl: " + urlTextView);
-        Log.d("TAG", "displayUrl: " + urlTextView.getText());
         urlTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
@@ -476,7 +471,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
         if (image != null) {
             String currentPhotoPath = image.getAbsolutePath();
             currentNote.setNoteImage(currentPhotoPath);
-            Toast.makeText(this, "" + currentPhotoPath, Toast.LENGTH_SHORT).show();
         }
         return image;
     }
@@ -536,7 +530,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
     @Override
     public void onNotifyRemainder(int ID) {
         addEditActivityViewModel.deleteByID(ID);
-        Toast.makeText(context, "Delettedddddd", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("MissingInflatedId")
@@ -670,19 +663,14 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
     }
 
     private void setAlarm(Remainder remainder, Calendar calendar) {
-        Log.d("TAG", "setAlarm: innnn");
-        Toast.makeText(this, "In set Alarm method", Toast.LENGTH_SHORT).show();
         Intent iBroadCast = new Intent(AddEditActivity.this, AlarmBroadcast.class);
         iBroadCast.putExtra(RemainderDetailsActivity.REMAINDER_TITLE, remainder.getTitle());
         iBroadCast.putExtra(RemainderDetailsActivity.REMAINDER_ID, remainder.getId());
-        Toast.makeText(this, "ID here is : " + currentNote.getRemainder_id(), Toast.LENGTH_SHORT).show();
-        Log.d("TAG", "setAlarm: id here is : " + currentNote.getRemainder_id());
         iBroadCast.putExtra(RemainderDetailsActivity.IS_REMAINDER_FROM_REMAINDER_DETAILS_ACTIVITY, false);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(AddEditActivity.this, remainder.getId(), iBroadCast, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        Toast.makeText(AddEditActivity.this, "" + remainder.getTitle() + " " + remainder.getDate() + " " + remainder.getTime(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -728,7 +716,6 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     String selectedDate = dayOfMonth + "/" + month + "/" + year;
-                    Toast.makeText(this, "dekhooooo" + selectedDate, Toast.LENGTH_SHORT).show();
                     listener.onDateSelected(selectedDate, year, month, dayOfMonth);
 
                 },
@@ -1018,52 +1005,30 @@ public class AddEditActivity extends AppCompatActivity implements OnNotifyRemain
             if (isEditMode) {
 
                 if (previousRemainder != null) {
-                    Log.d("TAG", "onSaveClick: log1");
                     addEditActivityViewModel.updateRemainder(currentRemainder);
-                    Log.d("TAG", "onSaveClick: log2");
                     setAlarm(currentRemainder, calendar);
-                    Log.d("TAG", "onSaveClick: log3");
                     currentNote.setRemainder_id(previousRemainder.getId());
-                    Log.d("TAG", "onSaveClick: log4");
                 } else if(currentRemainder != null){
-                    Log.d("TAG", "onSaveClick: log5");
                     addEditActivityViewModel.insertRemainder(currentRemainder);
-                    Log.d("TAG", "onSaveClick: log6");
                     setAlarm(currentRemainder, calendar);
-                    Log.d("TAG", "onSaveClick: log7");
                     int lastRemainderId = addEditActivityViewModel.getLastInsertedIRemainderId();
-                    Log.d("TAG", "onSaveClick: log8");
                     currentNote.setRemainder_id(lastRemainderId);
-                    Log.d("TAG", "onSaveClick: log9");
                 }
-                Log.d("TAG", "onSaveClick: log10");
                 addEditActivityViewModel.updateNote(currentNote);
-                Log.d("TAG", "onSaveClick: log11");
-
                 Toast.makeText(AddEditActivity.this, "Note Updated", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK, new Intent().putExtra(NOTE_UPDATED, true));
-                Log.d("TAG", "onSaveClick: log11");
                 finish();
 
             } else {
-                Log.d("TAG", "onSaveClick: log12");
                 if (currentRemainder != null) {
-                    Log.d("TAG", "onSaveClick: log13");
                     addEditActivityViewModel.insertRemainder(currentRemainder);
-                    Log.d("TAG", "onSaveClick: log14");
                     setAlarm(currentRemainder, calendar);
-                    Log.d("TAG", "onSaveClick: log15");
                     int lastRemainderId = addEditActivityViewModel.getLastInsertedIRemainderId();
-                    Log.d("TAG", "onSaveClick: log16");
                     currentNote.setRemainder_id(lastRemainderId);
-                    Log.d("TAG", "onSaveClick: log17");
                 }
-                Log.d("TAG", "onSaveClick: log18");
                 addEditActivityViewModel.insertNote(currentNote);
-                Log.d("TAG", "onSaveClick: log19");
                 Toast.makeText(AddEditActivity.this, "Note added Successfully", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK, new Intent().putExtra(NOTE_ADDED, true));
-                Log.d("TAG", "onSaveClick: log20");
                 finish();
             }
 

@@ -138,21 +138,15 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
         remainderDetailsActivityViewModel.getAllRemainders().observe(this, remainders -> {
             remainderList = remainders;
-            Log.d("TAG", "showAllRemainders: 1");
             if (remainderList == null || remainderList.size() == 0){
-                Log.d("TAG", "showAllRemainders: 2");
                 activityRemainderDetailsBinding.remainderEmptyListImageView.setVisibility(View.VISIBLE);
-                Log.d("TAG", "showAllRemainders: 3");
                 Toast.makeText(this, "Empty list", Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "showAllRemainders: 4");
             }
             else {
 
                 runOnUiThread(() -> {
                     activityRemainderDetailsBinding.remainderEmptyListImageView.setVisibility(View.GONE);
-                    Log.d("TAG", "showAllRemainders: 5");
                     setAdapter(remainderList);
-                    Log.d("TAG", "showAllRemainders: 6");
                 });
             }
 
@@ -161,10 +155,7 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
     private void setAdapter(List<Remainder> remainderList) {
         remainderAdapter.setRemainderList(remainderList);
-        Log.d("TAG", "showAllRemainders: 7");
-        Log.d("TAG", "setAdapter: "+remainderList.size());
         recyclerView.setAdapter(remainderAdapter);
-        Log.d("TAG", "showAllRemainders: 8");
     }
 
 
@@ -287,7 +278,6 @@ public class RemainderDetailsActivity extends AppCompatActivity implements OnNot
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
-            Toast.makeText(RemainderDetailsActivity.this, ""+remainder.getTitle()+ " " +remainder.getDate()+" "+remainder.getTime(), Toast.LENGTH_SHORT).show();
     }
 
     private void deleteAlarm(int ID){

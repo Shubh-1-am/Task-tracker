@@ -102,18 +102,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public void showAllNotes(){
             mainActivityViewModel.getAllNotes().observe(this, notes -> {
                 noteList = notes;
-                Log.d("TAG", "showAllNotes: 1");
                 if (noteList == null || noteList.size() == 0) {
-                    Log.d("TAG", "showAllNotes: 2");
                     activityMainBinding.emptyListImageView.setVisibility(View.VISIBLE);
-                    Log.d("TAG", "showAllNotes: 3");
                 } else {
                     runOnUiThread(() -> {
-                        Log.d("TAG", "showAllNotes: 4");
                         activityMainBinding.emptyListImageView.setVisibility(View.GONE);
-                        Log.d("TAG", "showAllNotes: 5");
                         setAdapter(noteList);
-                        Log.d("TAG", "showAllNotes: 6");
                     });
                 }
             });
@@ -131,17 +125,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
 
     private void setAdapter(List<Note> noteList) {
-        Log.d("TAG", "showAllNotes: 7");
         noteAdapter.setNoteList(noteList);
-        Log.d("TAG", "setAdapter: "+noteList.size());
-        Log.d("TAG", "showAllNotes: 8");
         recyclerView.setAdapter(noteAdapter);
-        Log.d("TAG", "showAllNotes: 9");
     }
 
     @Override
     public void onClick(Note note) {
-        Toast.makeText(this, "Edit note", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this,AddEditActivity.class);
         intent.putExtra(IS_EDIT_MODE,true);
         intent.putExtra(NOTE_EXTRA,note);
@@ -166,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     mainActivityViewModel.delete(note);
                     noteList.remove(note);
                     setAdapter(noteList);
-                    Toast.makeText(MainActivity.this, "IDDDDDD  "+note.getId(), Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -222,14 +211,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public class MainHandler{
 
         public void onAddNoteClick(View view){
-            Toast.makeText(MainActivity.this, "Add note", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,AddEditActivity.class);
             intent.putExtra(IS_EDIT_MODE,false);
             startActivity(intent);
         }
 
         public void onAlarmClick(View view){
-            Toast.makeText(MainActivity.this, "Alarm", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,RemainderDetailsActivity.class);
             startActivity(intent);
         }
