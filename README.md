@@ -12,7 +12,7 @@ TaskTrek is built using the MVVM (Model-View-ViewModel) architecture pattern. Th
 - Add hyperlinks to your notes.
 - Insert images into your notes.
 - Choose a background for the app.
-- Set alarm reminders for your notes.
+- Set alarm reminders for your tasks and notes.
 
 ## Installation
 To install the Task-Tracker app, simply download the APK file to your Android device and follow the installation prompts.
